@@ -1,6 +1,8 @@
-# Metrics
+![Metrics](./metricses/metrics.svg)
 
-![Metrics](./github-metrics.svg)
+![Languages](./metricses/languages.svg)
+
+![Trophies](./metricses/triphies.svg)
 
 [![](https://raw.githubusercontent.com/Omochice/Omochice/main/profile-summary-card-output/solarized/0-profile-details.svg)](https://github.com/vn7n24fzkq/github-profile-summary-cards)
 
@@ -8,3 +10,7 @@
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Omochice&layout=donut-vertical&theme=solarized-light)](https://github.com/anuraghazra/github-readme-stats)
 
+
+## Lapras
+
+[![Lapras link](./lapras/score.png)](https://lapras.com/public/K4AJVET)

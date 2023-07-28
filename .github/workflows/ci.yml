@@ -1,4 +1,4 @@
-name: GitHub-Profile-Summary-Cards
+name: Generate-images-automatically
 
 on:
   schedule: # execute every 24 hours
@@ -22,11 +22,13 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
           user: Omochice
+          filename: metricses/metrics.svg
       - name: Generate language activity
         uses: lowlighter/metrics@latest
         with:
           token: ${{ secrets.TOKEN }}
-          filename: metrics.plugin.languages.svg
+          user: Omochice
+          filename: metricses/languages.svg
           base: ""
           plugin_languages: yes
           plugin_languages_indepth: yes
@@ -34,11 +36,24 @@ jobs:
           plugin_languages_sections: recently-used
           plugin_languages_recent_load: 400
           plugin_languages_recent_days: 14
-      - name: Detailed display
+      - name: Genarate trophies
         uses: lowlighter/metrics@latest
         with:
-          filename: metrics.plugin.achievements.svg
           token: ${{ secrets.TOKEN }}
+          user: Omochice
+          filename: metricses/trophies.svg
           base: ""
           plugin_achievements: yes
           plugin_achievements_only: sponsor, maintainer, octonaut
+      - uses: denolib/setup-deno@v2
+        with:
+          deno-version: v1.x
+      - run: deno run --unstable --allow-net --allow-read --allow-write scripts/fetch_lapras_score.ts
+      - run: |
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "github-actions[bot]"
+          git config --global pull.ff only
+      - run: git pull
+      - run: git add lapras/score.png
+      - run: git commit -m "Update lapras score" || echo "No change lapras score"
+      - run: git push origin main
