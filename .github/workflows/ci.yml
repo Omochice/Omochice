@@ -22,14 +22,14 @@ jobs:
         with:
           token: ${{ secrets.TOKEN }}
           user: Omochice
+          template: classic
+          base: header, activity, community, repositories, metadata
+          config_timezone: Asia/Tokyo
           filename: metrics.svg
           plugin_languages: yes
           plugin_languages_colors: github
           plugin_languages_limit: 8
           plugin_languages_threshold: 0%
-          plugin_languages_sections: recently-used
-          plugin_languages_recent_load: 400
-          plugin_languages_recent_days: 14
       - uses: denolib/setup-deno@v2
         with:
           deno-version: v1.x
