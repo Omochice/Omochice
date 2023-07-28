@@ -33,7 +33,7 @@ jobs:
       - uses: denolib/setup-deno@v2
         with:
           deno-version: v1.x
-      - run: deno run --unstable --allow-net --allow-read --allow-write scripts/fetch-lapras-score.ts
+      - run: deno run --unstable --allow-net --allow-read --allow-write script/fetch-lapras-score.ts
       - run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
