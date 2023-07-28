@@ -26,14 +26,14 @@ jobs:
           base: ""
           plugin_languages: yes
           plugin_languages_indepth: yes
-          commits_authoring: firstname lastname, username, username@users.noreply.github.com
+          plugin_reactions_ignored: github-actions[bot], dependabot[bot]
           plugin_languages_sections: recently-used
           plugin_languages_recent_load: 400
           plugin_languages_recent_days: 14
       - uses: denolib/setup-deno@v2
         with:
           deno-version: v1.x
-      - run: deno run --unstable --allow-net --allow-read --allow-write scripts/fetch_lapras_score.ts
+      - run: deno run --unstable --allow-net --allow-read --allow-write scripts/fetch-lapras-score.ts
       - run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
