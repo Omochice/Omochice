@@ -11,14 +11,14 @@ jobs:
     name: generate
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: vn7n24fzkq/github-profile-summary-cards@release
+      - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
+      - uses: vn7n24fzkq/github-profile-summary-cards@b592c3dfa7cead26b6c40ad3e683b9eddd7735c7 # release
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
           USERNAME: ${{ github.repository_owner }}
       - name: Generate metrics
-        uses: lowlighter/metrics@latest
+        uses: lowlighter/metrics@65836723097537a54cd8eb90f61839426b4266b6 # latest
         with:
           token: ${{ secrets.TOKEN }}
           user: Omochice
@@ -30,7 +30,7 @@ jobs:
           plugin_languages_colors: github
           plugin_languages_limit: 8
           plugin_languages_threshold: 0%
-      - uses: denolib/setup-deno@v2
+      - uses: denolib/setup-deno@4df079f84f6c4ef488b04806df9af59e51d09bfb # v2.3.0
         with:
           deno-version: v1.x
       - run: deno run --unstable --allow-net --allow-read --allow-write script/fetch-lapras-score.ts
