@@ -9,7 +9,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     name: generate
-
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
       - uses: vn7n24fzkq/github-profile-summary-cards@b592c3dfa7cead26b6c40ad3e683b9eddd7735c7 # release
@@ -38,7 +39,7 @@ jobs:
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
           git config --global pull.ff only
-      - run: git pull
-      - run: git add lapras/score.png
-      - run: git commit -m "Update lapras score" || echo "No change lapras score"
-      - run: git push origin main
+          git pull
+          git add lapras/score.png
+          git commit -m "Update lapras score" || echo "No change lapras score"
+          git push origin main
