@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     name: generate
     permissions:
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@0ad4b8fadaa221de15dcec353f45205ec38ea70b # v4.1.4
       - uses: vn7n24fzkq/github-profile-summary-cards@e4ee818093f70d875371b7cccc0de10d868e3300 # release
