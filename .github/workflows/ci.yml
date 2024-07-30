@@ -13,7 +13,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - uses: vn7n24fzkq/github-profile-summary-cards@d79f640547a6780dbaa5f2b0db286f787c5e12c9 # release
+      - uses: vn7n24fzkq/github-profile-summary-cards@a4772ad2041307bc60f0263420ae24ae0f58f040 # release
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
