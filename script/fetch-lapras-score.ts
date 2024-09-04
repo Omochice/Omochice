@@ -1,6 +1,6 @@
 // This is from https://github.com/yuki-yano/yuki-yano/blob/49fd52ec52071ef80b1db386049a4c509f207570/scripts/fetch_lapras_score.ts
 import { DOMParser } from "https://deno.land/x/deno_dom@v0.1.46/deno-dom-wasm.ts";
-import { existsSync } from "jsr:@std/fs@1.0.2";
+import { existsSync } from "jsr:@std/fs@1.0.3";
 
 const response = await fetch("https://lapras.com/public/K4AJVET");
 const html = await response.text();
