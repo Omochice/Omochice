@@ -21,3 +21,4 @@ jobs:
           BACKGROUND_FIRST: "#767676"
           BACKGROUND_SECOND: "#e1e1e1"
           LANG: "en"
+          UPDATE_TIME: "false"
