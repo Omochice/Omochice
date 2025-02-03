@@ -7,6 +7,7 @@ on:
 
 jobs:
   update-card:
+    timeout-minutes: 30
     name: LAPRAS Card
     runs-on: ubuntu-latest
     steps:
