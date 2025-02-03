@@ -32,15 +32,3 @@ jobs:
           plugin_languages_colors: github
           plugin_languages_limit: 8
           plugin_languages_threshold: 0%
-      - uses: denolib/setup-deno@4df079f84f6c4ef488b04806df9af59e51d09bfb # v2.3.0
-        with:
-          deno-version: v1.x
-      - run: deno run --unstable --allow-net --allow-read --allow-write script/fetch-lapras-score.ts
-      - run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git config --global pull.ff only
-          git pull
-          git add lapras/score.png
-          git commit -m "Update lapras score" || echo "No change lapras score"
-          git push origin main

@@ -11,4 +11,5 @@
 
 ## Lapras
 
-[![Lapras link](./lapras/score.png)](https://lapras.com/public/K4AJVET)
+<!--START_SECTION:lapras-card-->
+<!--END_SECTION:lapras-card-->
