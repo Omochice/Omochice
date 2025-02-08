@@ -22,15 +22,12 @@ jobs:
         with:
           USERNAME: ${{ github.repository_owner }}
           AUTO_PUSH: false
-      - name: Commit profile summary
-        run: |
-          # NOTE: github-profile-summary-cards cannot work under `persist-credentials: false`
-          # This is hack with AUTO_PUSH: false
-          # See https://github.com/vn7n24fzkq/github-profile-summary-cards/blob/1f8ff3713c5527d056d6437b911553926996f53a/src/app.ts#L46
-          git config --global user.email profile-summary-cards-bot@example.com
-          git config --global user.name profile-summary-cards[bot]
-          git add ./profile-summary-card-output/
-          git commit -m 'chore: Generate profile summary cards'
+      - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
+        with:
+          commit_message: 'chore: Generate profile summary cards'
+          file_pattern: './profile-summary-card-output/'
+          commit_user_name: profile-summary-cards[bot]
+          commit_user_email: profile-summary-cards-bot@example.com
       - name: Generate metrics
         uses: lowlighter/metrics@366f8b9dfe3a59656c67d5dcad9950f59c9bc96d # latest
         with:
