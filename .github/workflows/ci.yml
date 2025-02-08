@@ -21,6 +21,7 @@ jobs:
         with:
           USERNAME: ${{ github.repository_owner }}
           AUTO_PUSH: false
+      - run: git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
       - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -29,6 +30,7 @@ jobs:
           file_pattern: './profile-summary-card-output/'
           commit_user_name: profile-summary-cards[bot]
           commit_user_email: profile-summary-cards-bot@example.com
+      - run: git remote remove origin
   create-metrics:
     timeout-minutes: 30
     runs-on: ubuntu-latest
