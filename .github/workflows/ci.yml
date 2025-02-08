@@ -40,7 +40,7 @@ jobs:
           base: header, activity, community, repositories, metadata
           config_timezone: Asia/Tokyo
           filename: metrics.svg
-          commit_message: "chore: Update metrics.svg - [Skip GitHub Action]"
+          committer_message: "chore: Update metrics.svg - [Skip GitHub Action]"
           plugin_languages: yes
           plugin_languages_colors: github
           plugin_languages_limit: 8
