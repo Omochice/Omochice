@@ -23,6 +23,8 @@ jobs:
           USERNAME: ${{ github.repository_owner }}
           AUTO_PUSH: false
       - uses: stefanzweifel/git-auto-commit-action@e348103e9026cc0eee72ae06630dbe30c8bf7a79 # v5.1.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           commit_message: 'chore: Generate profile summary cards'
           file_pattern: './profile-summary-card-output/'
