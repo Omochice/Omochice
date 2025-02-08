@@ -40,6 +40,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    needs:
+      - build
     steps:
       - uses: kawamataryo/lapras-card-readme@97beea07675cba3eded93eaeb71744413d7f8e8b # v1.3.0
         with:
