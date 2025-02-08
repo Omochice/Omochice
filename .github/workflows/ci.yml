@@ -6,7 +6,7 @@ on:
   workflow_dispatch: null
 
 jobs:
-  build:
+  create-profile-summary:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     name: generate
@@ -30,6 +30,15 @@ jobs:
           file_pattern: './profile-summary-card-output/'
           commit_user_name: profile-summary-cards[bot]
           commit_user_email: profile-summary-cards-bot@example.com
+  create-metrics:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    name: generate
+    needs:
+      - create-profile-summary
+    permissions:
+      contents: write
+    steps:
       - name: Generate metrics
         uses: lowlighter/metrics@366f8b9dfe3a59656c67d5dcad9950f59c9bc96d # latest
         with:
@@ -44,14 +53,15 @@ jobs:
           plugin_languages_colors: github
           plugin_languages_limit: 8
           plugin_languages_threshold: 0%
-  update-card:
+  create-lapras-card:
     timeout-minutes: 30
     name: LAPRAS Card
     runs-on: ubuntu-latest
     permissions:
       contents: write
     needs:
-      - build
+      - create-profile-summary
+      - create-metrics
     steps:
       - uses: kawamataryo/lapras-card-readme@97beea07675cba3eded93eaeb71744413d7f8e8b # v1.3.0
         with:
