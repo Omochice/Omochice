@@ -4,9 +4,9 @@
 
 [![github_trophy](https://github-profile-trophy.vercel.app/?username=Omochice&row=1&column=8)](https://github-profile-trophy.vercel.app/?username=Omochice&row=1&column=8)
 
-[![Omochice's GitHub stats](https://github-readme-stats.vercel.app/api?username=Omochice&theme=solarized-light)](https://github.com/Omochice/github-readme-stats)
+[![Omochice's GitHub stats](https://github-readme-stats.shion.dev/api?username=Omochice&theme=solarized-light)](https://github.com/Omochice/github-readme-stats)
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Omochice&layout=donut-vertical&theme=solarized-light)](https://github.com/anuraghazra/github-readme-stats)
+[![Top Langs](https://github-readme-stats.shion.dev/api/top-langs/?username=Omochice&layout=donut-vertical&theme=solarized-light)](https://github.com/anuraghazra/github-readme-stats)
 
 
 ## Lapras
