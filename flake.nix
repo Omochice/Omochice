@@ -63,6 +63,15 @@
             ];
             programs = {
               # keep-sorted start block=yes
+              deno = {
+                enable = true;
+                includes = [
+                  "*.json"
+                  "*.jsonc"
+                  "*.ts"
+                  "*.tsx"
+                ];
+              };
               keep-sorted.enable = true;
               nixfmt.enable = true;
               rumdl-format.enable = true;
@@ -107,6 +116,24 @@
               enable = true;
               name = "gitleaks";
               entry = "${pkgs.lib.getExe pkgs.gitleaks} git --no-banner --redact";
+              pass_filenames = false;
+              stages = [ "pre-push" ];
+            };
+            # Runs as a hook rather than a flake check because deno check needs the
+            # npm dependencies, which the sealed check sandbox cannot fetch.
+            deno-check = {
+              enable = true;
+              name = "deno check";
+              entry = pkgs.lib.getExe (
+                pkgs.writeShellApplication {
+                  name = "deno-check";
+                  runtimeInputs = [ pkgs.deno ];
+                  text = ''
+                    deno check scripts/generate-profile.tsx
+                    deno lint
+                  '';
+                }
+              );
               pass_filenames = false;
               stages = [ "pre-push" ];
             };
