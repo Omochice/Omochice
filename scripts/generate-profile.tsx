@@ -5,7 +5,8 @@
  */
 
 import { Renderer } from "@takumi-rs/wasm/node";
-import { fromHtml } from "@takumi-rs/helpers/html";
+import { fromJsx } from "@takumi-rs/helpers/jsx";
+import type { ComponentChildren } from "preact";
 import { dirname } from "@std/path";
 
 const API = "https://api.github.com/graphql";
@@ -164,20 +165,6 @@ export async function toDataUri(url: string): Promise<string> {
   return `data:${type};base64,${btoa(bin)}`;
 }
 
-function esc(s: string): string {
-  return s.replace(
-    /[&<>"']/g,
-    (c) =>
-      ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&apos;",
-      })[c]!,
-  );
-}
-
 function topLanguages(repos: Repository[], limit: number) {
   const bytes = new Map<string, { size: number; color: string }>();
   for (const r of repos) {
@@ -288,31 +275,44 @@ function svgDataUri(svg: string): string {
   return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
 }
 
-function iconImg(name: string, fill = ICON): string {
+function Icon({ name, fill = ICON }: { name: string; fill?: string }) {
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16"><path fill="${fill}" d="${
       ICONS[name]
     }"/></svg>`;
-  return `<img src="${svgDataUri(svg)}" width="16" height="16"/>`;
+  return <img src={svgDataUri(svg)} width={16} height={16} />;
 }
 
-function field(icon: string, text: string): string {
-  return `<div class="field">${iconImg(icon)}<span>${esc(text)}</span></div>`;
+function Field({ icon, children }: { icon: string; children: string }) {
+  return (
+    <div class="field">
+      <Icon name={icon} />
+      <span>{children}</span>
+    </div>
+  );
 }
 
-function heading(icon: string, text: string): string {
-  return `<div class="heading">${iconImg(icon, HEADING)}<span>${
-    esc(text)
-  }</span></div>`;
+function Heading({ icon, children }: { icon: string; children: string }) {
+  return (
+    <div class="heading">
+      <Icon name={icon} fill={HEADING} />
+      <span>{children}</span>
+    </div>
+  );
 }
 
-function section(title: string, rows: string[][]): string {
-  return `<div class="section">${title}${
-    rows.map(([i, t]) => field(i, t)).join("")
-  }</div>`;
+function Section(
+  { title, rows }: { title?: ComponentChildren; rows: [string, string][] },
+) {
+  return (
+    <div class="section">
+      {title ?? <div class="heading" />}
+      {rows.map(([icon, text]) => <Field icon={icon}>{text}</Field>)}
+    </div>
+  );
 }
 
-function monthlyChart(days: Day[], w: number, h: number): string {
+function MonthlyChart({ days, w, h }: { days: Day[]; w: number; h: number }) {
   const months = byMonth(days);
   const peak = Math.max(...months.map((m) => m.count), 1);
   const left = 24;
@@ -334,6 +334,8 @@ function monthlyChart(days: Day[], w: number, h: number): string {
         : ""
     )
     .join("");
+  // The chart stays a hand-written SVG string: takumi embeds <img> SVGs as
+  // vector data URIs, whereas inline <svg> elements are not laid out by it.
   const svg =
     `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" font-family="sans-serif">
 <text x="${left - 3}" y="${
@@ -346,13 +348,15 @@ function monthlyChart(days: Day[], w: number, h: number): string {
 <polyline points="${line}" fill="none" stroke="${HEADING}" stroke-width="1.5" stroke-linejoin="round"/>
 ${labels}
 </svg>`;
-  return `<img src="${svgDataUri(svg)}" width="${w}" height="${h}"/>`;
+  return <img src={svgDataUri(svg)} width={w} height={h} />;
 }
 
 /**
- * Builds the HTML document that takumi lays out and renders.
+ * The profile card as a component tree that takumi lays out and renders.
  */
-export function html(user: UserData, avatar: string, now: Date): string {
+export function ProfileCard(
+  { user, avatar, now }: { user: UserData; avatar: string; now: Date },
+) {
   const c = user.contributionsCollection;
   const repos = user.repositories.nodes;
   const sum = (f: (r: Repository) => number) =>
@@ -361,94 +365,119 @@ export function html(user: UserData, avatar: string, now: Date): string {
   const days = c.contributionCalendar.weeks
     .flatMap((w) => w.contributionDays)
     .slice(-364);
-  const chartW = WIDTH / 2 - 20;
 
-  return `<div class="root">
-<div class="title"><img class="avatar" src="${avatar}" width="20" height="20"/><span>${
-    esc(user.name ?? user.login)
-  }</span></div>
-<div class="row">
-  <div class="col">
-    ${field("clock", `Joined GitHub ${yearsAgo(user.createdAt, now)}`)}
-    ${field("people", `Followed by ${user.followers.totalCount} users`)}
-  </div>
-  <div class="col">
-    ${monthlyChart(days, chartW, 44)}
-    ${
-    field(
-      "repo",
-      `Contributed to ${user.repositoriesContributedTo.totalCount} repositories`,
-    )
-  }
-  </div>
-</div>
-<div class="row">
-  <div class="col">${
-    section(heading("graph", "Activity"), [
-      ["commit", `${c.totalCommitContributions} Commits`],
-      [
-        "review",
-        `${c.totalPullRequestReviewContributions} Pull requests reviewed`,
-      ],
-      ["pr", `${c.totalPullRequestContributions} Pull requests opened`],
-      ["issue", `${c.totalIssueContributions} Issues opened`],
-      ["comment", `${user.issueComments.totalCount} issue comments`],
-    ])
-  }</div>
-  <div class="col">${
-    section(heading("people", "Community stats"), [
-      ["org", `Member of ${user.organizations.totalCount} organizations`],
-      ["people", `Following ${user.following.totalCount} users`],
-      ["heart", `Sponsoring ${user.sponsoring.totalCount} repositories`],
-      ["star", `Starred ${user.starredRepositories.totalCount} repositories`],
-      ["eye", `Watching ${user.watching.totalCount} repositories`],
-    ])
-  }</div>
-</div>
-<div class="row">
-  <div class="col">${
-    section(
-      heading("repo", `${user.allRepositories.totalCount} Repositories`),
-      [
-        ["tag", `${sum((r) => r.releases.totalCount)} Releases`],
-        [
-          "database",
-          `${formatDiskUsage(user.allRepositories.totalDiskUsage)} used`,
-        ],
-      ],
-    )
-  }</div>
-  <div class="col">${
-    section(`<div class="heading"></div>`, [
-      ["heart", `${user.sponsors.totalCount} Sponsors`],
-      ["star", `${sum((r) => r.stargazerCount)} Stargazers`],
-      ["fork", `${sum((r) => r.forkCount)} Forkers`],
-      ["eye", `${sum((r) => r.watchers.totalCount)} Watchers`],
-    ])
-  }</div>
-</div>
-<div class="section">
-  ${heading("code", `${langs.count} Languages`)}
-  <div class="bar">${
-    langs.top
-      .map((l) =>
-        `<div style="width:${
-          (l.ratio * 100).toFixed(2)
-        }%;background:${l.color}"></div>`
-      )
-      .join("")
-  }</div>
-  <div class="legend">${
-    langs.top
-      .map((l) =>
-        `<div class="field"><div class="dot" style="background:${l.color}"></div><span>${
-          esc(l.name)
-        }</span><span class="pct">${(l.ratio * 100).toFixed(1)}%</span></div>`
-      )
-      .join("")
-  }</div>
-</div>
-</div>`;
+  return (
+    <div class="root">
+      <div class="title">
+        <img class="avatar" src={avatar} width={20} height={20} />
+        <span>{user.name ?? user.login}</span>
+      </div>
+      <div class="row">
+        <div class="col">
+          <Field icon="clock">
+            {`Joined GitHub ${yearsAgo(user.createdAt, now)}`}
+          </Field>
+          <Field icon="people">
+            {`Followed by ${user.followers.totalCount} users`}
+          </Field>
+        </div>
+        <div class="col">
+          <MonthlyChart days={days} w={WIDTH / 2 - 20} h={44} />
+          <Field icon="repo">
+            {`Contributed to ${user.repositoriesContributedTo.totalCount} repositories`}
+          </Field>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <Section
+            title={<Heading icon="graph">Activity</Heading>}
+            rows={[
+              ["commit", `${c.totalCommitContributions} Commits`],
+              [
+                "review",
+                `${c.totalPullRequestReviewContributions} Pull requests reviewed`,
+              ],
+              ["pr", `${c.totalPullRequestContributions} Pull requests opened`],
+              ["issue", `${c.totalIssueContributions} Issues opened`],
+              ["comment", `${user.issueComments.totalCount} issue comments`],
+            ]}
+          />
+        </div>
+        <div class="col">
+          <Section
+            title={<Heading icon="people">Community stats</Heading>}
+            rows={[
+              [
+                "org",
+                `Member of ${user.organizations.totalCount} organizations`,
+              ],
+              ["people", `Following ${user.following.totalCount} users`],
+              [
+                "heart",
+                `Sponsoring ${user.sponsoring.totalCount} repositories`,
+              ],
+              [
+                "star",
+                `Starred ${user.starredRepositories.totalCount} repositories`,
+              ],
+              ["eye", `Watching ${user.watching.totalCount} repositories`],
+            ]}
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <Section
+            title={
+              <Heading icon="repo">
+                {`${user.allRepositories.totalCount} Repositories`}
+              </Heading>
+            }
+            rows={[
+              ["tag", `${sum((r) => r.releases.totalCount)} Releases`],
+              [
+                "database",
+                `${formatDiskUsage(user.allRepositories.totalDiskUsage)} used`,
+              ],
+            ]}
+          />
+        </div>
+        <div class="col">
+          <Section
+            rows={[
+              ["heart", `${user.sponsors.totalCount} Sponsors`],
+              ["star", `${sum((r) => r.stargazerCount)} Stargazers`],
+              ["fork", `${sum((r) => r.forkCount)} Forkers`],
+              ["eye", `${sum((r) => r.watchers.totalCount)} Watchers`],
+            ]}
+          />
+        </div>
+      </div>
+      <div class="section">
+        <Heading icon="code">{`${langs.count} Languages`}</Heading>
+        <div class="bar">
+          {langs.top.map((l) => (
+            <div
+              style={{
+                width: `${(l.ratio * 100).toFixed(2)}%`,
+                background: l.color,
+              }}
+            />
+          ))}
+        </div>
+        <div class="legend">
+          {langs.top.map((l) => (
+            <div class="field">
+              <div class="dot" style={{ background: l.color }} />
+              <span>{l.name}</span>
+              <span class="pct">{`${(l.ratio * 100).toFixed(1)}%`}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 }
 
 /**
@@ -459,11 +488,13 @@ export async function render(
   avatar: string,
   now: Date,
 ): Promise<string> {
-  const { node, stylesheets } = fromHtml(html(user, avatar, now));
+  const { node } = await fromJsx(
+    <ProfileCard user={user} avatar={avatar} now={now} />,
+  );
   const renderer = new Renderer();
   return await renderer.renderSvg(node, {
     width: WIDTH,
-    stylesheets: [STYLESHEET, ...stylesheets],
+    stylesheets: [STYLESHEET],
   });
 }
 
