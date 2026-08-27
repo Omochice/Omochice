@@ -3,7 +3,7 @@
     "@takumi-rs/helpers/jsx": "npm:@takumi-rs/helpers@2.12.0/jsx",
     "@std/path": "jsr:@std/path@1.1.6",
     "@takumi-rs/wasm/node": "npm:@takumi-rs/wasm@2.12.0/node",
-    "preact": "npm:preact@10.28.2"
+    "preact": "npm:preact@10.29.8"
   },
   "compilerOptions": {
     "jsx": "react-jsx",
