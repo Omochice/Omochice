@@ -3,9 +3,9 @@
   "specifiers": {
     "jsr:@std/internal@^1.0.14": "1.0.14",
     "jsr:@std/path@1.1.6": "1.1.6",
-    "npm:@takumi-rs/helpers@2.12.0": "2.12.0_preact@10.28.2",
-    "npm:@takumi-rs/wasm@2.12.0": "2.12.0_preact@10.28.2",
-    "npm:preact@10.28.2": "10.28.2"
+    "npm:@takumi-rs/helpers@2.12.0": "2.12.0_preact@10.29.8",
+    "npm:@takumi-rs/wasm@2.12.0": "2.12.0_preact@10.29.8",
+    "npm:preact@10.29.8": "10.29.8"
   },
   "jsr": {
     "@std/internal@1.0.14": {
@@ -19,7 +19,7 @@
     }
   },
   "npm": {
-    "@takumi-rs/helpers@2.12.0_preact@10.28.2": {
+    "@takumi-rs/helpers@2.12.0_preact@10.29.8": {
       "integrity": "sha512-3DF+spdZEKvFahc3SXQ3roXL9DzQkPoQ/oqopKT0bcXd3QiROTyYncRgzqUnEfBlFp236m9pSFVRSwW2GvLO9w==",
       "dependencies": [
         "preact"
@@ -28,14 +28,14 @@
         "preact"
       ]
     },
-    "@takumi-rs/wasm@2.12.0_preact@10.28.2": {
+    "@takumi-rs/wasm@2.12.0_preact@10.29.8": {
       "integrity": "sha512-tGwNU96tWZZCqrCogy5nHfablvUW6UtzK52Ydnkld7hnNdzyU3eHrCzxNKmSf+tHYJHHKLgyOpgEnxFBIqriFQ==",
       "dependencies": [
         "@takumi-rs/helpers"
       ]
     },
-    "preact@10.28.2": {
-      "integrity": "sha512-lbteaWGzGHdlIuiJ0l2Jq454m6kcpI1zNje6d8MlGAFlYvP2GO4ibnat7P74Esfz4sPTdM6UxtTwh/d3pwM9JA=="
+    "preact@10.29.8": {
+      "integrity": "sha512-ej2aVZ+vZ8WO7tvlQWRM9N63A0KzF9q4mWJfDUHgYaIofWY9hu74QdnQrjoPMmZi2/nZ5gN0bJCQF49xQqx09Q=="
     }
   },
   "workspace": {
@@ -43,7 +43,7 @@
       "jsr:@std/path@1.1.6",
       "npm:@takumi-rs/helpers@2.12.0",
       "npm:@takumi-rs/wasm@2.12.0",
-      "npm:preact@10.28.2"
+      "npm:preact@10.29.8"
     ]
   }
 }
