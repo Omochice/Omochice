@@ -307,7 +307,7 @@ function Section(
   return (
     <div class="section">
       {title ?? <div class="heading" />}
-      {rows.map(([icon, text]) => <Field icon={icon}>{text}</Field>)}
+      {rows.map(([icon, text]) => <Field key={text} icon={icon}>{text}</Field>)}
     </div>
   );
 }
@@ -459,6 +459,7 @@ export function ProfileCard(
         <div class="bar">
           {langs.top.map((l) => (
             <div
+              key={l.name}
               style={{
                 width: `${(l.ratio * 100).toFixed(2)}%`,
                 background: l.color,
@@ -468,7 +469,7 @@ export function ProfileCard(
         </div>
         <div class="legend">
           {langs.top.map((l) => (
-            <div class="field">
+            <div key={l.name} class="field">
               <div class="dot" style={{ background: l.color }} />
               <span>{l.name}</span>
               <span class="pct">{`${(l.ratio * 100).toFixed(1)}%`}</span>

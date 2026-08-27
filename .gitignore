@@ -1,1 +1,5 @@
 /profile.svg
+result
+result-*
+.direnv
+.pre-commit-config.yaml
