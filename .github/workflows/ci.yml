@@ -5,6 +5,8 @@ on:
     - cron: '0 12 * * *'
   workflow_dispatch: null
 
+permissions: {}
+
 jobs:
   create-profile:
     timeout-minutes: 30
@@ -20,10 +22,10 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
-      - uses: aquaproj/aqua-installer@11dd79b4e498d471a9385aa9fb7f62bb5f52a73c # v4.0.4
+      - uses: ./.github/actions/setup-nix
         with:
-          aqua_version: v2.56.6
-      - run: deno task generate --out _site/profile.svg
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: nix develop -c deno task generate --out _site/profile.svg
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
       - uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5.0.0
