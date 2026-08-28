@@ -34,20 +34,3 @@ jobs:
           path: _site
       - uses: actions/deploy-pages@cd2ce8fcbc39b97be8ca5fce6e763baed58fa128 # v5.0.0
         id: deploy
-  create-lapras-card:
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    needs:
-      - create-profile
-    steps:
-      - uses: kawamataryo/lapras-card-readme@97beea07675cba3eded93eaeb71744413d7f8e8b # v1.3.0
-        with:
-          SHARE_ID: K4AJVET
-          ICON_FIRST: "#888888"
-          ICON_SECOND: "#cccccc"
-          BACKGROUND_FIRST: "#767676"
-          BACKGROUND_SECOND: "#e1e1e1"
-          LANG: "en"
-          UPDATE_TIME: "false"
