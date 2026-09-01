@@ -1,8 +1,8 @@
 {
   "imports": {
-    "@takumi-rs/helpers/jsx": "npm:@takumi-rs/helpers@2.13.0/jsx",
+    "@takumi-rs/helpers/jsx": "npm:@takumi-rs/helpers@2.13.1/jsx",
     "@std/path": "jsr:@std/path@1.1.6",
-    "@takumi-rs/wasm/node": "npm:@takumi-rs/wasm@2.13.0/node",
+    "@takumi-rs/wasm/node": "npm:@takumi-rs/wasm@2.13.1/node",
     "preact": "npm:preact@10.29.8"
   },
   "compilerOptions": {
