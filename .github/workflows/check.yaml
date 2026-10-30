@@ -20,7 +20,7 @@ jobs:
           persist-credentials: false
           # gitleaks scans the commit history, so a shallow clone is not enough
           fetch-depth: 0
-      - uses: ./.github/actions/setup-nix
+      - uses: $/.github/actions/setup-nix
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - run: nix flake check --print-build-logs
