@@ -179,7 +179,8 @@
               }
               ''
                 cd $src
-                actionlint .github/**/*.{yaml,yml}
+                # The sandboxed source has no .git, so actionlint cannot discover its config by itself.
+                actionlint -config-file .github/actionlint.yaml .github/**/*.{yaml,yml}
                 ghalint run
                 zizmor .github/workflows .github/actions
                 touch $out
